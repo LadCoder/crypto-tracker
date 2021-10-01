@@ -7,17 +7,17 @@ import './App.css'
  * @return {JSX.Element}
  */
 export function App(): JSX.Element {
-  const { loading, error, data } = readCoins()
+  const { isLoading, error, response } = readCoins()
 
-  if (loading) return <>Loading...</>
+  if (isLoading) return <>Loading...</>
 
   if (error) return <>{error.message}</>
-  console.log(loading, error, data)
+  console.log(isLoading, error, response)
   return (
     <>
       <h1>Crypo Tracker</h1>
       {error}
-      {data?.toString()}
+      {response?.toString()}
     </>
   )
 }
