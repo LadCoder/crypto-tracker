@@ -1,5 +1,6 @@
 import React from 'react'
 import { readCoins } from '../../api/readCoins'
+import { Loader } from '../shared/Loader'
 
 interface Props {}
 
@@ -10,13 +11,12 @@ interface Props {}
 export function CoinsComponent({}: Props): JSX.Element {
   const { isLoading, error, response } = readCoins()
 
-  if (isLoading) return <>Loading...</>
-
+  if (isLoading) return <Loader width={60} height={60} />
   if (error) return <>{error.message}</>
-  console.log(isLoading, error, response)
+
   return (
     <>
-      <h1>Crypo Tracker</h1>
+      <h1>Crypto Tracker</h1>
       {error}
       {response?.toString()}
     </>
