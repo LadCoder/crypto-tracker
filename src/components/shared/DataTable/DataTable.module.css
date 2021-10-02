@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.table {
+  display: grid;
+  width: 100%;
+}
+
+.filter {
+  max-width: 400px;
+  display: flex;
+  flex-grow: 1;
+}

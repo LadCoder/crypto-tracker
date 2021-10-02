@@ -1,0 +1,15 @@
+.row {
+  display: grid;
+  grid-template-columns: var(--columns-template);
+  grid-template-rows: auto;
+  box-sizing: border-box;
+  padding: 15px;
+  border-bottom: var(--border);
+}
+
+.cell {
+  display: flex;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

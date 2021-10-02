@@ -1,0 +1,9 @@
+.wrapper {
+  display: grid;
+  border: var(--border);
+  background-color: var(--header-bg);
+  grid-template-columns: var(--columns-template);
+  grid-template-rows: auto;
+  box-sizing: border-box;
+  padding: 15px;
+}

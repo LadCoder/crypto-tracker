@@ -1,5 +1,7 @@
 import React from 'react'
 import { ColumnDefinition } from './DataTable'
+import styles from './DataTableHeader.module.css'
+import { DataTableRow } from './DataTableRows'
 
 interface Props<T, K extends keyof T> {
   columns: ColumnDefinition<T, K>[]
@@ -19,14 +21,14 @@ export function DataTableHeader<T, K extends keyof T>({
     }
 
     return (
-      <th key={`column-${column.key}`} style={style}>
+      <div
+        className={styles.heading}
+        key={`column-${column.key}`}
+        style={style}
+      >
         {column.name}
-      </th>
+      </div>
     )
   })
-  return (
-    <thead>
-      <tr>{headers}</tr>
-    </thead>
-  )
+  return <DataTableRow className={styles.wrapper}>{headers}</DataTableRow>
 }

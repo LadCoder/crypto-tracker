@@ -18,7 +18,7 @@ export type CustomRenderers<T, K extends keyof T> = Partial<
 export type ColumnDefinition<T, K extends keyof T> = {
   key: K
   name: string
-  width?: number
+  width?: string
 }
 
 interface Props<T, K extends keyof T> {
@@ -52,17 +52,29 @@ export function Datatable<T, K extends keyof T>({
     ? data.filter((item) => getFilterKey(item).includes(lowerCaseFilter))
     : data
 
+  const columnsTemplate = columns
+    .map((column) => column.width || '1fr')
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={styles.wrapper}>
-      <SearchBox onSearch={setFilter} />
-      <table>
+    <div
+      className={styles.wrapper}
+      style={
+        {
+          '--columns-template': columnsTemplate
+        } as any
+      }
+    >
+      <SearchBox className={styles.filter} onSearch={setFilter} />
+      <div className={styles.table}>
         <DataTableHeader columns={columns} />
         <DataTableRows
           data={filteredData}
           columns={columns}
           customRenderer={customRenderer}
         />
-      </table>
+      </div>
     </div>
   )
 }

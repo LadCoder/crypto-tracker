@@ -1,5 +1,6 @@
 import React from 'react'
 import { ColumnDefinition, CustomRenderers } from './DataTable'
+import styles from './DataTableRows.module.css'
 
 interface Props<T, K extends keyof T> {
   data: T[]
@@ -20,18 +21,50 @@ export function DataTableRows<T, K extends keyof T>({
 }: Props<T, K>): JSX.Element {
   const rows = data.map((row, i) => {
     return (
-      <tr key={i}>
+      <DataTableRow key={i}>
         {columns.map((column) => {
           const columnData = row[column.key]
           const renderer = customRenderer?.[column.key]
           if (renderer) {
-            return <td>{renderer(row)}</td>
+            return (
+              <div className={styles.cell} key={String(column.key)}>
+                {renderer(row)}
+              </div>
+            )
           }
-          return <td key={String(column.key)}>{columnData}</td>
+          return (
+            <div className={styles.cell} key={String(column.key)}>
+              {columnData}
+            </div>
+          )
         })}
-      </tr>
+      </DataTableRow>
     )
   })
 
-  return <tbody>{rows}</tbody>
+  return <>{rows}</>
+}
+
+/**
+ * Row for the data table component
+ * @param {React.ReactNode} children
+ * @return {JSX.Element}
+ */
+export function DataTableRow({
+  children,
+  className,
+  style
+}: {
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}): JSX.Element {
+  return (
+    <div
+      className={[className, styles.row].filter(Boolean).join(' ')}
+      style={style}
+    >
+      {children}
+    </div>
+  )
 }

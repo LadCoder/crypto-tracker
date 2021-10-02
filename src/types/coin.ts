@@ -8,13 +8,13 @@ export interface CoinSummary {
 export interface Coin {
   id: number
   summary: CoinSummary
-  currentPrice: string
-  marketCap: string
+  currentPrice: number
+  marketCap: number
   marketCapRank: number
-  totalVolume: string
-  priceChangePercentage1hInCurrency: string
-  priceChangePercentage24hInCurrency: string
-  priceChangePercentage7dInCurrency: string
+  totalVolume: number
+  priceChangePercentage1hInCurrency: number
+  priceChangePercentage24hInCurrency: number
+  priceChangePercentage7dInCurrency: number
 }
 
 export interface CoinResult {

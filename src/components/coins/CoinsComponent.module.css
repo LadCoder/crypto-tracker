@@ -1,8 +1,7 @@
 .summary {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  gap: 10px;
 }
 
 .coinImage {
@@ -13,4 +12,16 @@
 .coinName {
   color: var(--primary-text-color);
   font-weight: 700;
+}
+
+.coinSymbol {
+  text-transform: uppercase;
+}
+
+.priceRise {
+  color: var(--growth-color);
+}
+
+.priceDrop {
+  color: var(--decline-color);
 }
