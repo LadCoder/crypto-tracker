@@ -40,8 +40,12 @@ export function CoinsComponent({}: Props): JSX.Element {
           customRenderer={{
             summary: (item) => (
               <div className={styles.summary}>
-                <img alt={item.summary.name} src={item.summary.image} />
-                <span>{item.summary.name}</span>
+                <img
+                  className={styles.coinImage}
+                  alt={item.summary.name}
+                  src={item.summary.image}
+                />
+                <span className={styles.coinName}>{item.summary.name}</span>
                 <span>{item.summary.symbol}</span>
               </div>
             )

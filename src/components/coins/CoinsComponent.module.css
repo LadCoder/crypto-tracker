@@ -1,4 +1,16 @@
 .summary {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.coinImage {
+  width: 18px;
+  height: auto;
+}
+
+.coinName {
+  color: var(--primary-text-color);
+  font-weight: 700;
 }
