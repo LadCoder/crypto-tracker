@@ -16,4 +16,5 @@
   max-width: 400px;
   display: flex;
   flex-grow: 1;
+  align-self: flex-end;
 }

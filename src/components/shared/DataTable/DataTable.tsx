@@ -68,7 +68,12 @@ export function Datatable<T, K extends keyof T>({
         } as any
       }
     >
-      <SearchBox className={styles.filter} onSearch={setFilter} />
+      <SearchBox
+        className={styles.filter}
+        placeholder={'Search'}
+        onSearch={setFilter}
+      />
+
       <div className={styles.table}>
         {width >= 768 && <DataTableHeader columns={columns} />}
         <DataTableRows

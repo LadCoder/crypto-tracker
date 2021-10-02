@@ -1,8 +1,6 @@
 export const baseUrl = 'https://api.coingecko.com/api/v3'
 
 export const listOfCoinsUrl = `${baseUrl}/coins/markets`
-export const trendingCoinsUrl = `${baseUrl}/search/trending`
-
 export const listOfCoinsUrlParams = (currency: string = 'usd') => {
   return {
     vs_currency: currency,
@@ -13,3 +11,5 @@ export const listOfCoinsUrlParams = (currency: string = 'usd') => {
     sparkline: false
   }
 }
+
+export const trendingCoinsUrl = `${baseUrl}/search/trending`
