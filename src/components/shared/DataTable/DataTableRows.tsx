@@ -1,9 +1,10 @@
 import React from 'react'
-import { ColumnDefinition } from './DataTable'
+import { ColumnDefinition, CustomRenderers } from './DataTable'
 
 interface Props<T, K extends keyof T> {
   data: T[]
   columns: ColumnDefinition<T, K>[]
+  customRenderer?: CustomRenderers<T, K>
 }
 
 /**
@@ -14,13 +15,19 @@ interface Props<T, K extends keyof T> {
  */
 export function DataTableRows<T, K extends keyof T>({
   data,
-  columns
+  columns,
+  customRenderer
 }: Props<T, K>): JSX.Element {
   const rows = data.map((row, i) => {
     return (
       <tr key={i}>
         {columns.map((column) => {
-          return <td key={String(column.key)}>{row[column.key]}</td>
+          const columnData = row[column.key]
+          const renderer = customRenderer?.[column.key]
+          if (renderer) {
+            return <td>{renderer(row)}</td>
+          }
+          return <td key={String(column.key)}>{columnData}</td>
         })}
       </tr>
     )

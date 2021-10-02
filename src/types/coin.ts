@@ -1,15 +1,13 @@
 /* eslint-disable camelcase */
 export interface CoinSummary {
-  id: string
   symbol: string
   name: string
+  image: string
 }
 
 export interface Coin {
   id: number
-  name: string
-  symbol: string
-  image: string
+  summary: CoinSummary
   currentPrice: string
   marketCap: string
   marketCapRank: number

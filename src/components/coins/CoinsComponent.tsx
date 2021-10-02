@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { readCoins } from '../../api/readCoins'
 import { Coin } from '../../types/coin'
 import { ColumnDefinition, Datatable } from '../shared/DataTable/DataTable'
 import { Loader } from '../shared/Loader'
+import styles from './CoinsComponent.module.css'
 
 interface Props {}
 
 const columns: ColumnDefinition<Coin, keyof Coin>[] = [
-  { key: 'name', name: 'Name' },
-  { key: 'symbol', name: 'Symbol' },
+  { key: 'summary', name: 'Coin' },
   { key: 'currentPrice', name: 'Price' },
   { key: 'priceChangePercentage1hInCurrency', name: '1h' },
   { key: 'priceChangePercentage24hInCurrency', name: '24h' },
@@ -34,7 +34,18 @@ export function CoinsComponent({}: Props): JSX.Element {
         <Datatable
           data={response}
           columns={columns}
-          makeFilterKey={(coin) => [coin.id, coin.name, coin.symbol].join(' ')}
+          makeFilterKey={(coin) =>
+            [coin.id, coin.summary.name, coin.summary.symbol].join(' ')
+          }
+          customRenderer={{
+            summary: (item) => (
+              <div className={styles.summary}>
+                <img alt={item.summary.name} src={item.summary.image} />
+                <span>{item.summary.name}</span>
+                <span>{item.summary.symbol}</span>
+              </div>
+            )
+          }}
         />
       )}
     </>

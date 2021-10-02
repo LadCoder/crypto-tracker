@@ -19,9 +19,12 @@ export function readCoins(currency: string = 'usd'): State<Coin[]> {
   const coinData: Coin[] | undefined = response?.map((coin) => {
     return {
       id: coin.id,
-      name: coin.name,
-      symbol: coin.symbol,
-      image: coin.image,
+      summary: {
+        name: coin.name,
+        symbol: coin.symbol,
+        image: coin.image
+      },
+
       currentPrice: convertToCurrency(currency, coin.current_price),
       totalVolume: convertToCurrency(currency, coin.total_volume),
       marketCap: convertToCurrency(currency, coin.market_cap),
