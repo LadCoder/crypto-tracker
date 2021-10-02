@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { CoinsComponent } from '../coins/CoinsComponent'
+import { Header } from './Header'
 import { PageContainer } from './Page'
 
 /**
@@ -10,7 +11,7 @@ import { PageContainer } from './Page'
 export function CryptoRouter(): JSX.Element {
   return (
     <Router>
-      <a href="/trending">trending</a>
+      <Header />
       <PageContainer>
         <Switch>
           <Route exact path="/">

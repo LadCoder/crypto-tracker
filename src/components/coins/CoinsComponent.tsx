@@ -34,7 +34,7 @@ export function CoinsComponent({}: Props): JSX.Element {
 
   return (
     <>
-      <h1>Crypto Tracker</h1>
+      <h1>Coin list</h1>
       {response && (
         <Datatable
           data={response}

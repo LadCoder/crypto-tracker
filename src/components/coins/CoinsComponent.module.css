@@ -1,12 +1,13 @@
 .summary {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 }
 
 .coinImage {
   width: 18px;
-  height: auto;
+  height: 18px;
 }
 
 .coinName {
