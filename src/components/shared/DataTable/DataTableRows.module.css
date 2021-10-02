@@ -13,3 +13,15 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@media (max-width: 767px) {
+  .row {
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content;
+  }
+
+  .cell {
+    justify-content: center;
+    margin-bottom: 5px;
+  }
+}

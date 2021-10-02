@@ -3,6 +3,7 @@ import styles from './DataTable.module.css'
 import { DataTableHeader } from './DataTableHeader'
 import { DataTableRows } from './DataTableRows'
 import { SearchBox } from '../SearchBox'
+import useWindowSize from '../../../hooks/useWindowSize'
 
 /**
  * Renders an image in a column
@@ -43,6 +44,7 @@ export function Datatable<T, K extends keyof T>({
   customRenderer
 }: Props<T, K>): JSX.Element {
   const [filter, setFilter] = useState('')
+  const { width } = useWindowSize()
 
   const getFilterKey = (item: T) => {
     return makeFilterKey ? makeFilterKey(item) : ''
@@ -68,7 +70,7 @@ export function Datatable<T, K extends keyof T>({
     >
       <SearchBox className={styles.filter} onSearch={setFilter} />
       <div className={styles.table}>
-        <DataTableHeader columns={columns} />
+        {width >= 768 && <DataTableHeader columns={columns} />}
         <DataTableRows
           data={filteredData}
           columns={columns}

@@ -1,6 +1,6 @@
 .wrapper {
   display: grid;
-  border: var(--border);
+  border-top: var(--border);
   background-color: var(--header-bg);
   grid-template-columns: var(--columns-template);
   grid-template-rows: auto;
