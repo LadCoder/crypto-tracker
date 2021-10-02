@@ -9,6 +9,7 @@ import { CoinsComponent } from '../coins/CoinsComponent'
 export function CryptoRouter(): JSX.Element {
   return (
     <Router>
+      <a href="/trending">trending</a>
       <Switch>
         <Route exact path="/">
           <CoinsComponent />

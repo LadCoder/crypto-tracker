@@ -1,16 +1,18 @@
 import { State, useAxios } from '../hooks/useAxios'
 import { Coin, CoinResult } from '../types/coin'
 import { listOfCoinsUrl, listOfCoinsUrlParams } from '../constants/paths'
+import { convertToCurrency, convertToPercent } from '../services/convertNumber'
 
 /**
  * Fetches a list of crypto coins from the api service and returns them to the user
+ * @param {string} currency Accepts a currency to show coin comparisons against
  * @return {State<Coin[]>} A list of cryptocurrency coins
  */
-export function readCoins(): State<Coin[]> {
+export function readCoins(currency: string = 'usd'): State<Coin[]> {
   const { isLoading, error, response } = useAxios<CoinResult[]>(
     listOfCoinsUrl,
     {
-      params: listOfCoinsUrlParams
+      params: listOfCoinsUrlParams(currency)
     }
   )
 
@@ -20,16 +22,19 @@ export function readCoins(): State<Coin[]> {
       name: coin.name,
       symbol: coin.symbol,
       image: coin.image,
-      currentPrice: coin.current_price,
-      totalVolume: coin.total_volume,
-      marketCap: coin.market_cap,
+      currentPrice: convertToCurrency(currency, coin.current_price),
+      totalVolume: convertToCurrency(currency, coin.total_volume),
+      marketCap: convertToCurrency(currency, coin.market_cap),
       marketCapRank: coin.market_cap_rank,
-      priceChangePercentage1hInCurrency:
-        coin.price_change_percentage_1h_in_currency,
-      priceChangePercentage24hInCurrency:
-        coin.price_change_percentage_24h_in_currency,
-      priceChangePercentage7dInCurrency:
+      priceChangePercentage1hInCurrency: convertToPercent(
+        coin.price_change_percentage_1h_in_currency
+      ),
+      priceChangePercentage24hInCurrency: convertToPercent(
         coin.price_change_percentage_24h_in_currency
+      ),
+      priceChangePercentage7dInCurrency: convertToPercent(
+        coin.price_change_percentage_24h_in_currency
+      )
     }
   })
 

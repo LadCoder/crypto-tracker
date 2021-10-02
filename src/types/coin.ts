@@ -10,13 +10,13 @@ export interface Coin {
   name: string
   symbol: string
   image: string
-  currentPrice: number
-  marketCap: number
+  currentPrice: string
+  marketCap: string
   marketCapRank: number
-  totalVolume: number
-  priceChangePercentage1hInCurrency: number
-  priceChangePercentage24hInCurrency: number
-  priceChangePercentage7dInCurrency: number
+  totalVolume: string
+  priceChangePercentage1hInCurrency: string
+  priceChangePercentage24hInCurrency: string
+  priceChangePercentage7dInCurrency: string
 }
 
 export interface CoinResult {

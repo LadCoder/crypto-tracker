@@ -1,8 +1,21 @@
 import React from 'react'
 import { readCoins } from '../../api/readCoins'
+import { Coin } from '../../types/coin'
+import { ColumnDefinition, Datatable } from '../shared/DataTable/DataTable'
 import { Loader } from '../shared/Loader'
 
 interface Props {}
+
+const columns: ColumnDefinition<Coin, keyof Coin>[] = [
+  { key: 'name', name: 'Name' },
+  { key: 'symbol', name: 'Symbol' },
+  { key: 'currentPrice', name: 'Price' },
+  { key: 'priceChangePercentage1hInCurrency', name: '1h' },
+  { key: 'priceChangePercentage24hInCurrency', name: '24h' },
+  { key: 'priceChangePercentage7dInCurrency', name: '7d' },
+  { key: 'totalVolume', name: 'Volume' },
+  { key: 'marketCap', name: 'Mkt Cap' }
+]
 
 /**
  * Displays a data table containing data from the coingecko api
@@ -17,8 +30,13 @@ export function CoinsComponent({}: Props): JSX.Element {
   return (
     <>
       <h1>Crypto Tracker</h1>
-      {error}
-      {response?.toString()}
+      {response && (
+        <Datatable
+          data={response}
+          columns={columns}
+          makeFilterKey={(coin) => [coin.id, coin.name, coin.symbol].join(' ')}
+        />
+      )}
     </>
   )
 }
