@@ -41,6 +41,7 @@ export function SearchBox({
         placeholder={placeholder}
         aria-label="search"
         onChange={onUpdate}
+        data-testid="search-box"
       />
     </div>
   )
