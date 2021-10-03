@@ -3,7 +3,8 @@ import { coinGeckoApi } from '../../api/coinGeckoApi'
 import {
   listOfCoinsUrl,
   marketUrl,
-  marketUrlParams
+  marketUrlParams,
+  trendingCoinsUrl
 } from '../../constants/paths'
 import { CoinActions } from '../../types/actions'
 
@@ -26,3 +27,11 @@ export const getCoinDetails =
       payload: coinsResponse.data
     })
   }
+
+export const getTrendingCoins = () => async (dispatch: Dispatch) => {
+  const trendingResponse = await coinGeckoApi.get(trendingCoinsUrl)
+  dispatch({
+    type: CoinActions.GetTrendingCoins,
+    payload: trendingResponse.data
+  })
+}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { CoinsComponent } from '../coins/CoinsComponent'
+import { TrendingComponent } from '../trending/TrendingComponent'
+
 import { Header } from './Header'
 import { PageContainer } from './Page'
 
@@ -18,7 +20,7 @@ export function CryptoRouter(): JSX.Element {
             <CoinsComponent />
           </Route>
           <Route exact path="/trending">
-            {/* <TrendingComponent /> */}
+            <TrendingComponent />
           </Route>
           <Route exact path="/global">
             {/* <GlobalComponent /> */}

@@ -1,12 +1,12 @@
 import { CoinActions } from './actions'
-import { Coin, CoinSummary } from './coin'
+import { Coin, CoinSummary, TrendingCoin } from './coin'
 
 export type CoinState = {
   coins: CoinSummary[]
 }
 
 export type CoinAction = {
-  type: CoinActions
+  type: CoinActions.GetCoinSummary
   payload: CoinSummary[]
 }
 
@@ -15,6 +15,20 @@ export type MarketState = {
 }
 
 export type MarketAction = {
-  type: CoinActions
+  type: CoinActions.GetCoinDetails
   payload: Coin[]
+}
+
+export type TrendingState = {
+  trending: TrendingCoin[]
+}
+
+export type TrendingAction = {
+  type: CoinActions.GetTrendingCoins
+  payload: TrendingPayload
+}
+
+export type TrendingPayload = {
+  coins: any[]
+  exchange: any[]
 }

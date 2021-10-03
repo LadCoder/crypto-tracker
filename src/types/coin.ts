@@ -18,6 +18,16 @@ export interface Coin {
   priceChangePercentage7dInCurrency: number
 }
 
+export interface TrendingCoin {
+  id: string
+  name: string
+  symbol: string
+  image: string
+  marketCapRank: number
+  priceBtc: number
+  score: number
+}
+
 export interface CoinResult {
   id: number
   name: string
