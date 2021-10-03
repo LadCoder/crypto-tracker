@@ -62,5 +62,6 @@ export const globalReducer = (state: Global[] = [], action: GlobalAction) => {
 export const rootReducer = combineReducers({
   coins: coinsReducer,
   market: marketReducer,
-  trending: trendingReducer
+  trending: trendingReducer,
+  global: globalReducer
 })

@@ -1,6 +1,11 @@
+import { defaultCurrency } from '../constants/currency'
+
 export const convertToPercent = (num: number): string => `${num.toFixed(1)}%`
 
-export const convertToCurrency = (currency: string, num: number): string => {
+export const convertToCurrency = (
+  currency: string = defaultCurrency,
+  num: number
+): string => {
   const currencyFormatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
