@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../../redux'
@@ -23,24 +23,15 @@ const columns: ColumnDefinition<TrendingCoin, keyof TrendingCoin>[] = [
  * @return {JSX.Element}
  */
 export function TrendingComponent({}: Props): JSX.Element {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<Error | undefined>()
-
   const dispatch = useDispatch()
   const { getTrendingCoins } = bindActionCreators(actionCreators, dispatch)
 
   const { trending } = useSelector((state: TrendingState) => state)
+  const { isLoading, error, data } = trending
 
   useEffect(() => {
     const fetchTrending = async () => {
-      setIsLoading(true)
-      try {
-        getTrendingCoins()
-      } catch (error) {
-        setError(error as Error)
-      } finally {
-        setIsLoading(false)
-      }
+      getTrendingCoins()
     }
 
     fetchTrending()
@@ -52,9 +43,9 @@ export function TrendingComponent({}: Props): JSX.Element {
   return (
     <>
       <h1>Trending Coins</h1>
-      {trending && (
+      {data && (
         <Datatable
-          data={trending}
+          data={data}
           columns={columns}
           makeFilterKey={(coin) => [coin.id, coin.name, coin.symbol].join(' ')}
           customRenderer={{

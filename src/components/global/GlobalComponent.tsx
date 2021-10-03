@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { defaultCurrency } from '../../constants/currency'
@@ -19,27 +19,18 @@ interface Props {}
  * @return {JSX.Element}
  */
 export function GlobalComponent({}: Props): JSX.Element {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<Error | undefined>()
-
   const dispatch = useDispatch()
   const { getGlobalData } = bindActionCreators(actionCreators, dispatch)
 
   const { global } = useSelector((state: GlobalState) => state)
+  const { isLoading, error, data } = global
 
   useEffect(() => {
-    const fetchTrending = async () => {
-      setIsLoading(true)
-      try {
-        getGlobalData()
-      } catch (error) {
-        setError(error as Error)
-      } finally {
-        setIsLoading(false)
-      }
+    const fetchGlobalData = async () => {
+      getGlobalData()
     }
 
-    fetchTrending()
+    fetchGlobalData()
   }, [])
 
   if (isLoading) return <Loader width={60} height={60} />
@@ -48,33 +39,33 @@ export function GlobalComponent({}: Props): JSX.Element {
     <>
       <h1>Global Market Statistics</h1>
 
-      {global && (
+      {data && (
         <div className={styles.wrapper}>
-          {global.totalMarketCap && (
+          {data.totalMarketCap && (
             <Statistics
               value={convertToCurrency(
                 defaultCurrency,
-                global.totalMarketCap.usd
+                data.totalMarketCap.usd
               )}
               description={'Market Capitalization'}
-              growth={global.marketCapChange24hPercentage}
+              growth={data.marketCapChange24hPercentage}
             />
           )}
-          {global.totalVolume && (
+          {data.totalVolume && (
             <Statistics
-              value={convertToCurrency(defaultCurrency, global.totalVolume.usd)}
+              value={convertToCurrency(defaultCurrency, data.totalVolume.usd)}
               description={'Total Trading Volume'}
             />
           )}
-          {global.marketCapPercentage && (
+          {data.marketCapPercentage && (
             <Statistics
-              value={convertToPercent(global.marketCapPercentage.btc)}
+              value={convertToPercent(data.marketCapPercentage.btc)}
               description={'Bitcoin Market Cap Dominance'}
             />
           )}
-          {global.activeCoins && (
+          {data.activeCoins && (
             <Statistics
-              value={global.activeCoins.toString()}
+              value={data.activeCoins.toString()}
               description={'Active Coins'}
             />
           )}

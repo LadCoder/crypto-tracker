@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../../redux'
@@ -7,7 +7,7 @@ import {
   convertToPercent
 } from '../../services/convertNumber'
 import { Coin } from '../../types/coin'
-import { CoinState, MarketState } from '../../types/state'
+import { CoinSummaryState, MarketState } from '../../types/state'
 import { ColumnDefinition, Datatable } from '../shared/DataTable/DataTable'
 import { Loader } from '../shared/Loader'
 import { PaginationComponent } from '../shared/Pagination/PaginationComponent'
@@ -16,7 +16,7 @@ import styles from './CoinsComponent.module.css'
 interface Props {}
 
 const columns: ColumnDefinition<Coin, keyof Coin>[] = [
-  { key: 'summary', name: 'Coin', width: '2fr' },
+  { key: 'summary', name: 'Coin', width: '3fr' },
   { key: 'currentPrice', name: 'Price', width: '1fr' },
   { key: 'priceChangePercentage1hInCurrency', name: '1h', width: '0.6fr' },
   { key: 'priceChangePercentage24hInCurrency', name: '24h', width: '0.6fr' },
@@ -31,8 +31,6 @@ const columns: ColumnDefinition<Coin, keyof Coin>[] = [
  */
 export function CoinsComponent({}: Props): JSX.Element {
   const [currency] = useState<string>('usd')
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<Error | undefined>()
 
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [perPage] = useState<number>(100)
@@ -43,19 +41,15 @@ export function CoinsComponent({}: Props): JSX.Element {
     dispatch
   )
 
-  const { coins } = useSelector((state: CoinState) => state)
+  const { coins } = useSelector((state: CoinSummaryState) => state)
   const { market } = useSelector((state: MarketState) => state)
+
+  const isLoading = coins.isLoading || market.isLoading
+  const error = coins.error || market.error
 
   useEffect(() => {
     const fetchCoinSummaries = async () => {
-      setIsLoading(true)
-      try {
-        getCoinSummary()
-      } catch (error) {
-        setError(error as Error)
-      } finally {
-        setIsLoading(false)
-      }
+      getCoinSummary()
     }
 
     fetchCoinSummaries()
@@ -65,10 +59,10 @@ export function CoinsComponent({}: Props): JSX.Element {
     const fetchCoinSummaries = async () => {
       const indexOfLastItem = currentPage * perPage
       const indexOfFirstItem = indexOfLastItem - perPage
-      const currentItems = coins.slice(indexOfFirstItem, indexOfLastItem)
+      const currentItems = coins.data?.slice(indexOfFirstItem, indexOfLastItem)
 
-      const coinIds = currentItems.map((coin) => coin.id)
-      if (coinIds.length > 0) {
+      const coinIds = currentItems?.map((coin) => coin.id)
+      if (coinIds && coinIds.length > 0) {
         getCoinDetails(coinIds)
       }
     }
@@ -76,7 +70,7 @@ export function CoinsComponent({}: Props): JSX.Element {
     fetchCoinSummaries()
   }, [coins, currentPage])
 
-  const pages = Math.ceil(coins.length / perPage)
+  const pages = Math.ceil((coins.data?.length || 0) / perPage)
 
   if (isLoading) return <Loader width={60} height={60} />
   if (error) return <>{error.message}</>
@@ -84,9 +78,9 @@ export function CoinsComponent({}: Props): JSX.Element {
   return (
     <>
       <h1>Coin list</h1>
-      {market && (
+      {market.data && (
         <Datatable
-          data={market}
+          data={market.data}
           columns={columns}
           makeFilterKey={(coin) =>
             [coin.id, coin.summary.name, coin.summary.symbol].join(' ')
