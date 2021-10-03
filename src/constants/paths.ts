@@ -20,4 +20,6 @@ export const marketUrlParams = (ids: string[], currency: string = 'usd') => {
     }
   }
 }
+
 export const trendingCoinsUrl = `/search/trending`
+export const globalMarketUrl = '/global'

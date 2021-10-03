@@ -1,6 +1,7 @@
 import { Dispatch } from 'redux'
 import { coinGeckoApi } from '../../api/coinGeckoApi'
 import {
+  globalMarketUrl,
   listOfCoinsUrl,
   marketUrl,
   marketUrlParams,
@@ -33,5 +34,13 @@ export const getTrendingCoins = () => async (dispatch: Dispatch) => {
   dispatch({
     type: CoinActions.GetTrendingCoins,
     payload: trendingResponse.data
+  })
+}
+
+export const getGlobalData = () => async (dispatch: Dispatch) => {
+  const globalResponse = await coinGeckoApi.get(globalMarketUrl)
+  dispatch({
+    type: CoinActions.GetGlobalMarket,
+    payload: globalResponse.data
   })
 }
