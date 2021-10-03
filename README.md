@@ -6,6 +6,8 @@ related information.
 
 This app displays data about Cryptocurrency coins based on the Coingecko API.
 
+Demo: https://crypto-coin-challenge.herokuapp.com/
+
 ## Available Scripts
 
 In the project directory, you can run:
