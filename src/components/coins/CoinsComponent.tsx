@@ -1,12 +1,16 @@
-import React, { Fragment, useState } from 'react'
-import { readCoins } from '../../api/readCoins'
+import React, { Fragment, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { actionCreators } from '../../redux'
 import {
   convertToCurrency,
   convertToPercent
 } from '../../services/convertNumber'
 import { Coin } from '../../types/coin'
+import { CoinState, MarketState } from '../../types/state'
 import { ColumnDefinition, Datatable } from '../shared/DataTable/DataTable'
 import { Loader } from '../shared/Loader'
+import { PaginationComponent } from '../shared/Pagination/PaginationComponent'
 import styles from './CoinsComponent.module.css'
 
 interface Props {}
@@ -27,7 +31,52 @@ const columns: ColumnDefinition<Coin, keyof Coin>[] = [
  */
 export function CoinsComponent({}: Props): JSX.Element {
   const [currency] = useState<string>('usd')
-  const { isLoading, error, response } = readCoins(currency)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<Error | undefined>()
+
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [perPage] = useState<number>(100)
+
+  const dispatch = useDispatch()
+  const { getCoinSummary, getCoinDetails } = bindActionCreators(
+    actionCreators,
+    dispatch
+  )
+
+  const { coins } = useSelector((state: CoinState) => state)
+  const { market } = useSelector((state: MarketState) => state)
+
+  useEffect(() => {
+    const fetchCoinSummaries = async () => {
+      setIsLoading(true)
+      try {
+        getCoinSummary()
+      } catch (error) {
+        setError(error as Error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCoinSummaries()
+  }, [])
+
+  useEffect(() => {
+    const fetchCoinSummaries = async () => {
+      const indexOfLastItem = currentPage * perPage
+      const indexOfFirstItem = indexOfLastItem - perPage
+      const currentItems = coins.slice(indexOfFirstItem, indexOfLastItem)
+
+      const coinIds = currentItems.map((coin) => coin.id)
+      if (coinIds.length > 0) {
+        getCoinDetails(coinIds)
+      }
+    }
+
+    fetchCoinSummaries()
+  }, [coins, currentPage])
+
+  const pages = Math.ceil(coins.length / perPage)
 
   if (isLoading) return <Loader width={60} height={60} />
   if (error) return <>{error.message}</>
@@ -35,9 +84,9 @@ export function CoinsComponent({}: Props): JSX.Element {
   return (
     <>
       <h1>Coin list</h1>
-      {response && (
+      {market && (
         <Datatable
-          data={response}
+          data={market}
           columns={columns}
           makeFilterKey={(coin) =>
             [coin.id, coin.summary.name, coin.summary.symbol].join(' ')
@@ -68,6 +117,15 @@ export function CoinsComponent({}: Props): JSX.Element {
           }}
         />
       )}
+      <PaginationComponent
+        pagination={{
+          perPage,
+          currentPage,
+          pages,
+          hasMore: currentPage < pages
+        }}
+        paginate={setCurrentPage}
+      />
     </>
   )
 }
@@ -76,7 +134,7 @@ const priceChangeComponent = (change: number) => {
   const plusChange = change >= 0
   return (
     <span className={plusChange ? styles.priceRise : styles.priceDrop}>
-      {convertToPercent(change)}
+      {change ? convertToPercent(change) : '0.0%'}
     </span>
   )
 }

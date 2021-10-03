@@ -1,8 +1,9 @@
 export const baseUrl = 'https://api.coingecko.com/api/v3'
 
-export const listOfCoinsUrl = `${baseUrl}/coins/markets`
-export const listOfCoinsUrlParams = (currency: string = 'usd') => {
-  return {
+export const listOfCoinsUrl = `/coins/list`
+export const marketUrl = `/coins/markets`
+export const marketUrlParams = (ids: string[], currency: string = 'usd') => {
+  const defaultParams = {
     vs_currency: currency,
     order: 'market_cap_desc',
     per_page: 100,
@@ -10,6 +11,13 @@ export const listOfCoinsUrlParams = (currency: string = 'usd') => {
     price_change_percentage: '1h,24h,7d',
     sparkline: false
   }
-}
+  if (ids.length === 0) return { params: defaultParams }
 
-export const trendingCoinsUrl = `${baseUrl}/search/trending`
+  return {
+    params: {
+      ...defaultParams,
+      ids: ids.join(',')
+    }
+  }
+}
+export const trendingCoinsUrl = `/search/trending`

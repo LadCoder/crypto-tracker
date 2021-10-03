@@ -1,0 +1,25 @@
+.buttons {
+  list-style: none;
+  display: flex;
+}
+
+.button {
+  padding: 10px;
+  border: var(--border);
+  cursor: pointer;
+}
+
+.button.active {
+  color: var(--primary-text-color);
+  background-color: var(--header-bg);
+}
+
+.seperator {
+  display: flex;
+  padding: 10px;
+  border: var(--border);
+  align-items: flex-end;
+  justify-content: center;
+  font-weight: 700;
+  cursor: default;
+}
